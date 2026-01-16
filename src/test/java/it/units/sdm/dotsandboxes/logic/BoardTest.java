@@ -52,6 +52,28 @@ class BoardTest {
         // 4. Assert: We expect exactly 1 box to be verified
         assertEquals(1, completedBoxes, "Closing a square should return 1 point");
     }
+
+    @Test
+    void testAddLineCompletesTwoBoxes() {
+        Board board = new Board(3, 3);
+
+        // 1. Set up Box 1 (Left of the middle vertical line)
+        board.addLine(new Line(new Point(0, 0), new Point(0, 1))); // Top
+        board.addLine(new Line(new Point(1, 0), new Point(1, 1))); // Bottom
+        board.addLine(new Line(new Point(0, 0), new Point(1, 0))); // Left
+
+        // 2. Set up Box 2 (Right of the middle vertical line)
+        board.addLine(new Line(new Point(0, 1), new Point(0, 2))); // Top
+        board.addLine(new Line(new Point(1, 1), new Point(1, 2))); // Bottom
+        board.addLine(new Line(new Point(0, 2), new Point(1, 2))); // Right
+
+        // 3. Act: Add the shared center vertical line
+        Line sharedLine = new Line(new Point(0, 1), new Point(1, 1));
+        int completedBoxes = board.addLine(sharedLine);
+
+        // 4. Assert: Expect 2 points
+        assertEquals(2, completedBoxes, "Closing a shared side should return 2 points");
+    }
 }
 
 
