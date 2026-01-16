@@ -1,0 +1,30 @@
+name: Java CI with Gradle
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the code from the repository
+      - uses: actions/checkout@v4
+
+      # 2. Install Java 25
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'oracle'
+
+      # 3. Make the Gradle wrapper executable
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 4. Run the Tests
+      # This executes the same "test" task in IntelliJ
+      - name: Build and Test with Gradle
+        run: ./gradlew test
