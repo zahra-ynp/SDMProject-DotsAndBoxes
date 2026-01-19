@@ -74,5 +74,19 @@ class GameSessionTest {
         assertEquals(1, session.getScore(Player.Player2));
     }
 
+    @Test
+    void gameIsOverWhenAllBoxesAreClaimed() {
+         GameSession session = new GameSession(2, 2); // total boxes = 1
+
+        // complete the single box
+        session.makeMove(new Move(0, 0, Direction.HORIZONTAL)); // top
+        session.makeMove(new Move(0, 0, Direction.VERTICAL));   // left
+        session.makeMove(new Move(1, 0, Direction.HORIZONTAL)); // bottom
+        session.makeMove(new Move(0, 1, Direction.VERTICAL));   // right (closes box)
+
+        // now score sum should be 1, so game over
+        org.junit.jupiter.api.Assertions.assertTrue(session.isGameOver());
+}
+
 }
 
