@@ -10,6 +10,6 @@ class GameSessionTest {
     @Test
     void gameStartsWithPlayerOne() {
         GameSession session = new GameSession(5, 5);
-        assertEquals(Player.PLAYER_ONE, session.getCurrentPlayer());
+        assertEquals(Player.Player1, session.getCurrentPlayer());
     }
 }
