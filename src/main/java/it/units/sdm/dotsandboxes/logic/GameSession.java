@@ -11,11 +11,18 @@ public class GameSession {
     private final Board board;
     private Player currentPlayer;
 
+    // Keep board size here so GameSession can know when the game ends
+    private final int width;
+    private final int height;
+
     // Store scores per player (EnumMap is perfect for enums)
     private final Map<Player, Integer> scores;
 
     public GameSession(int width, int height) {
         // Player always starts
+        this.width = width;
+        this.height = height;
+
         this.board = new Board(width, height);
         this.currentPlayer = Player.Player1;
 
@@ -48,5 +55,15 @@ public class GameSession {
             scores.put(currentPlayer, scores.get(currentPlayer) + completedBoxes);
             // player gets an extra turn (do not switch)
         }
+    }
+
+    public boolean isGameOver() {
+        // Total boxes = (dots-1) * (dots-1)
+        int totalBoxes = (width - 1) * (height - 1);
+
+        // Game ends when all boxes are claimed by either player
+        int claimedBoxes = scores.get(Player.Player1) + scores.get(Player.Player2);
+
+        return claimedBoxes == totalBoxes;
     }
 }
