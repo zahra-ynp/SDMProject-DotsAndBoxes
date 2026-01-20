@@ -86,7 +86,28 @@ class GameSessionTest {
 
         // now score sum should be 1, so game over
         org.junit.jupiter.api.Assertions.assertTrue(session.isGameOver());
-}
+    }
+
+    @Test
+    void returnsNullWhenGameIsNotOver() {
+         GameSession session = new GameSession(2, 2);
+         org.junit.jupiter.api.Assertions.assertEquals(null, session.getWinner());
+    }
+
+    @Test
+    void returnsWinnerWhenGameEnds() {
+         GameSession session = new GameSession(2, 2);
+
+        // Make Player1 win the only box on a 2x2 board
+        session.makeMove(new Move(0, 0, Direction.HORIZONTAL)); // P1
+        session.makeMove(new Move(0, 0, Direction.VERTICAL));   // P2
+        session.makeMove(new Move(1, 0, Direction.HORIZONTAL)); // P1
+        session.makeMove(new Move(0, 1, Direction.VERTICAL));   // P2 completes box -> score P2 = 1
+
+        // For this sequence, Player2 wins
+        org.junit.jupiter.api.Assertions.assertEquals(Player.Player2, session.getWinner());
+    }
+
 
 }
 
