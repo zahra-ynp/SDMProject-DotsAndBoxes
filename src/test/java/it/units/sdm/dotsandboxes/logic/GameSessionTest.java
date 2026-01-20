@@ -1,5 +1,8 @@
 package it.units.sdm.dotsandboxes.logic;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import it.units.sdm.dotsandboxes.model.Direction;
 import it.units.sdm.dotsandboxes.model.Move;
 import it.units.sdm.dotsandboxes.model.Player;
@@ -85,8 +88,29 @@ class GameSessionTest {
         session.makeMove(new Move(0, 1, Direction.VERTICAL));   // right (closes box)
 
         // now score sum should be 1, so game over
-        org.junit.jupiter.api.Assertions.assertTrue(session.isGameOver());
-}
+        assertTrue(session.isGameOver());
+    }
+
+    @Test
+    void returnsNullWhenGameIsNotOver() {
+         GameSession session = new GameSession(2, 2);
+         assertNull(session.getWinner());
+    }
+
+    @Test
+    void returnsWinnerWhenGameEnds() {
+         GameSession session = new GameSession(2, 2);
+
+        // Make Player1 win the only box on a 2x2 board
+        session.makeMove(new Move(0, 0, Direction.HORIZONTAL)); // P1
+        session.makeMove(new Move(0, 0, Direction.VERTICAL));   // P2
+        session.makeMove(new Move(1, 0, Direction.HORIZONTAL)); // P1
+        session.makeMove(new Move(0, 1, Direction.VERTICAL));   // P2 completes box -> score P2 = 1
+
+        // For this sequence, Player2 wins
+        assertEquals(Player.Player2, session.getWinner());
+    }
+
 
 }
 

@@ -66,4 +66,22 @@ public class GameSession {
 
         return claimedBoxes == totalBoxes;
     }
+
+    public Player getWinner() {
+        // If the game is not over yet, there is no winner
+        if (!isGameOver()) {
+            return null;
+        }
+
+        int scoreP1 = scores.get(Player.Player1);
+        int scoreP2 = scores.get(Player.Player2);
+
+        // If scores are equal when the game ends -> tie
+        if (scoreP1 == scoreP2) {
+            return null;
+        }
+
+        return (scoreP1 > scoreP2) ? Player.Player1 : Player.Player2;
+    }
+
 }
