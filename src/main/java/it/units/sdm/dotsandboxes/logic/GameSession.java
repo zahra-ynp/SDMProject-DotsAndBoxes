@@ -68,17 +68,20 @@ public class GameSession {
     }
 
     public Player getWinner() {
+        // If the game is not over yet, there is no winner
         if (!isGameOver()) {
             return null;
         }
 
-        int p1 = scores.get(Player.Player1);
-        int p2 = scores.get(Player.Player2);
+        int scoreP1 = scores.get(Player.Player1);
+        int scoreP2 = scores.get(Player.Player2);
 
-        if (p1 == p2) {
-            return null; // tie
+        // If scores are equal when the game ends -> tie
+        if (scoreP1 == scoreP2) {
+            return null;
         }
-        return (p1 > p2) ? Player.Player1 : Player.Player2;
+
+        return (scoreP1 > scoreP2) ? Player.Player1 : Player.Player2;
     }
 
 }
