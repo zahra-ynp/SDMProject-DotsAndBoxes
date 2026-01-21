@@ -1,8 +1,6 @@
 package it.units.sdm.dotsandboxes.logic;
 
-import it.units.sdm.dotsandboxes.model.Line;
-import it.units.sdm.dotsandboxes.model.Player;
-import it.units.sdm.dotsandboxes.model.Point;
+import it.units.sdm.dotsandboxes.model.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,6 +96,17 @@ class BoardTest {
         // 3. Assert: The box must belong to Player 2
         assertEquals(Player.Player2, board.getBoxOwner(new Point(0, 0)),
                 "The player who completes the box should own it, even if they only drew 1 line.");
+    }
+
+    @Test
+    void testLineOwnershipIs() {
+        GameSession session = new GameSession(2, 2);
+        Move move = new Move(0, 0, Direction.HORIZONTAL);
+
+        session.makeMove(move);
+
+        // Verify Player 1 owns the line
+        assertEquals(Player.Player1, session.getLineOwner(move.toLine()));
     }
 }
 
