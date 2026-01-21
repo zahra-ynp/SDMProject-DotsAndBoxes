@@ -1,5 +1,6 @@
 package it.units.sdm.dotsandboxes.logic;
 
+import it.units.sdm.dotsandboxes.model.Line;
 import it.units.sdm.dotsandboxes.model.Move;
 import it.units.sdm.dotsandboxes.model.Player;
 
@@ -82,6 +83,18 @@ public class GameSession {
         }
 
         return (scoreP1 > scoreP2) ? Player.Player1 : Player.Player2;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public boolean isLineDrawn(Line line) {
+        return board.hasLine(line);
     }
 
 }
