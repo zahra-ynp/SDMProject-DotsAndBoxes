@@ -104,4 +104,15 @@ public class Board {
     public Player getBoxOwner(Point topLeft) {
         return completedBoxes.get(topLeft);
     }
+
+    private boolean isOutOfBounds(Line line) {
+        Point p1 = line.p1();
+        Point p2 = line.p2();
+
+        // Check columns (Width) and rows (Height)
+        boolean p1Invalid = p1.col() < 0 || p1.col() >= width || p1.row() < 0 || p1.row() >= height;
+        boolean p2Invalid = p2.col() < 0 || p2.col() >= width || p2.row() < 0 || p2.row() >= height;
+
+        return p1Invalid || p2Invalid;
+    }
 }
