@@ -74,6 +74,21 @@ class BoardTest {
         // 4. Assert: Expect 2 points
         assertEquals(2, completedBoxes, "Closing a shared side should return 2 points");
     }
+
+    @Test
+    void testAddLineOutOfBoundsThrowsException() {
+        Board board = new Board(3, 3);
+
+        // 1. Define lines that are clearly outside the 3x3 grid (indices 0,1,2)
+        Line negativeRow = new Line(new Point(-1, 0), new Point(0, 0));
+        Line tooBigCol   = new Line(new Point(0, 3), new Point(0, 4));
+        Line farAway     = new Line(new Point(10, 10), new Point(10, 11));
+
+        // 2. Assert that adding these lines causes a crash
+        assertThrows(IllegalArgumentException.class, () -> board.addLine(negativeRow));
+        assertThrows(IllegalArgumentException.class, () -> board.addLine(tooBigCol));
+        assertThrows(IllegalArgumentException.class, () -> board.addLine(farAway));
+    }
 }
 
 
