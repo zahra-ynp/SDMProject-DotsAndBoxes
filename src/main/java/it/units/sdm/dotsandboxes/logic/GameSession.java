@@ -3,6 +3,7 @@ package it.units.sdm.dotsandboxes.logic;
 import it.units.sdm.dotsandboxes.model.Line;
 import it.units.sdm.dotsandboxes.model.Move;
 import it.units.sdm.dotsandboxes.model.Player;
+import it.units.sdm.dotsandboxes.model.Point;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class GameSession {
     public void makeMove(Move move) {
         // Convert the user's move into a concrete line on the board
         // Board will validate duplicates and will also tell us if the move completes boxes.
-        int completedBoxes = board.addLine(move.toLine());
+        int completedBoxes = board.addLine(move.toLine(), currentPlayer);
 
         // If no box was completed -> switch player.
         // If one (or two) boxes were completed -> player gets an extra turn (do not switch).
@@ -95,6 +96,14 @@ public class GameSession {
 
     public boolean isLineDrawn(Line line) {
         return board.hasLine(line);
+    }
+
+    public Player getLineOwner(Line line) {
+        return board.getLineOwner(line);
+    }
+
+    public Player getBoxOwner(Point topLeft) {
+        return board.getBoxOwner(topLeft);
     }
 
 }
