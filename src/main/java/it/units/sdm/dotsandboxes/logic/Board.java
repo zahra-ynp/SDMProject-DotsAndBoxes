@@ -20,6 +20,12 @@ public class Board {
     // Returns the number of boxes completed by this move (0, 1, or 2)
     // 2 is for the case that new line is between to boxes
     public int addLine(Line line) {
+
+        //Validate the line is inside the board limits
+        if (isOutOfBounds(line)) {
+            throw new IllegalArgumentException("Line is outside the board boundaries");
+        }
+
         if (drawnLines.contains(line)) {
             throw new IllegalArgumentException("Line already exists");
         }
@@ -74,5 +80,16 @@ public class Board {
                 drawnLines.contains(bottom) &&
                 drawnLines.contains(left) &&
                 drawnLines.contains(right);
+    }
+
+    private boolean isOutOfBounds(Line line) {
+        Point p1 = line.p1();
+        Point p2 = line.p2();
+
+        // Check columns (Width) and rows (Height)
+        boolean p1Invalid = p1.col() < 0 || p1.col() >= width || p1.row() < 0 || p1.row() >= height;
+        boolean p2Invalid = p2.col() < 0 || p2.col() >= width || p2.row() < 0 || p2.row() >= height;
+
+        return p1Invalid || p2Invalid;
     }
 }
