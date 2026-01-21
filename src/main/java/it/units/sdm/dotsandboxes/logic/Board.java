@@ -82,15 +82,6 @@ public class Board {
         return false;
     }
 
-    private boolean isOutOfBounds(Line line) {
-        // ... (Keep your existing check here) ...
-        // Re-use the code you wrote earlier
-        Point p1 = line.p1();
-        Point p2 = line.p2();
-        return p1.col() < 0 || p1.col() >= width || p1.row() < 0 || p1.row() >= height ||
-                p2.col() < 0 || p2.col() >= width || p2.row() < 0 || p2.row() >= height;
-    }
-
     // --- Getters for the UI ---
 
     public boolean hasLine(Line line) {
