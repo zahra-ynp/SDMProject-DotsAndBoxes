@@ -81,8 +81,7 @@ public class ConsoleUI {
                     continue;
                 }
 
-                Move move = new Move(row, col, direction);
-                return move;
+                return new Move(row, col, direction);
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid numbers! Please enter integers for row and col.");
