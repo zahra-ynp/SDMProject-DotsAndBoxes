@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class GameSession {
 
+    private static final Player[] PLAYERS = { Player.Player1, Player.Player2 };
+
     private final Board board;
     private Player currentPlayer;
 
@@ -30,8 +32,10 @@ public class GameSession {
 
         // Initialize scores to 0 for both players
         scores = new EnumMap<>(Player.class);
-        scores.put(Player.Player1, 0);
-        scores.put(Player.Player2, 0);
+        for (Player p : PLAYERS) {
+            scores.put(p, 0);
+    }
+
     }
 
     public Player getCurrentPlayer() {
@@ -51,7 +55,8 @@ public class GameSession {
         // If one (or two) boxes were completed -> player gets an extra turn (do not switch).
         if (completedBoxes == 0) {
             // Minimal rule: switch player when the move does not score
-            currentPlayer = (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+            switchPlayer();
+
         } else {
             // Add points to the current player for each completed box
             scores.put(currentPlayer, scores.get(currentPlayer) + completedBoxes);
@@ -64,9 +69,12 @@ public class GameSession {
         int totalBoxes = (width - 1) * (height - 1);
 
         // Game ends when all boxes are claimed by either player
-        int claimedBoxes = scores.get(Player.Player1) + scores.get(Player.Player2);
-
+        int claimedBoxes = 0;
+        for (Player p : PLAYERS) {
+            claimedBoxes += scores.get(p);
+        }
         return claimedBoxes == totalBoxes;
+
     }
 
     public Player getWinner() {
@@ -75,16 +83,25 @@ public class GameSession {
             return null;
         }
 
-        int scoreP1 = scores.get(Player.Player1);
-        int scoreP2 = scores.get(Player.Player2);
+        Player bestPlayer = null;
+        int bestScore = -1;
+        boolean tie = false;
 
-        // If scores are equal when the game ends -> tie
-        if (scoreP1 == scoreP2) {
-            return null;
+        for (Player p : PLAYERS) {
+            int s = scores.get(p);
+            if (s > bestScore) {
+                bestScore = s;
+                bestPlayer = p;
+                tie = false;
+            } else if (s == bestScore) {
+                tie = true;
+            }
         }
 
-        return (scoreP1 > scoreP2) ? Player.Player1 : Player.Player2;
+        // If scores are equal when the game ends -> tie
+        return tie ? null : bestPlayer;
     }
+
 
     public int getWidth() {
         return width;
@@ -105,5 +122,10 @@ public class GameSession {
     public Player getBoxOwner(Point topLeft) {
         return board.getBoxOwner(topLeft);
     }
+
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+    }
+
 
 }
