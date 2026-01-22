@@ -34,11 +34,11 @@ public class Board {
         // Store the line with the player who drew it
         drawnLines.put(line, player);
 
-        return countCompletedBoxes(line, player);
+        return countNewlyCompletedBoxes(line, player);
     }
 
-    private int countCompletedBoxes(Line line, Player player) {
-        int completedBoxes = 0;
+    private int countNewlyCompletedBoxes(Line line, Player player) {
+        int newlyCompletedBoxes = 0;
         Point p1 = line.p1();
         Point p2 = line.p2();
         boolean isHorizontal = p1.row() == p2.row();
@@ -48,16 +48,16 @@ public class Board {
         //vertical -> left and right of the p1
         if (isHorizontal) {
             // Check Box Above (Row - 1)
-            if (checkAndClaimBox(p1.row() - 1, p1.col(), player)) completedBoxes++;
+            if (checkAndClaimBox(p1.row() - 1, p1.col(), player)) newlyCompletedBoxes++;
             // Check Box Below (Row)
-            if (checkAndClaimBox(p1.row(), p1.col(), player)) completedBoxes++;
+            if (checkAndClaimBox(p1.row(), p1.col(), player)) newlyCompletedBoxes++;
         } else {
             // Check Box Left (Col - 1)
-            if (checkAndClaimBox(p1.row(), p1.col() - 1, player)) completedBoxes++;
+            if (checkAndClaimBox(p1.row(), p1.col() - 1, player)) newlyCompletedBoxes++;
             // Check Box Right (Col)
-            if (checkAndClaimBox(p1.row(), p1.col(), player)) completedBoxes++;
+            if (checkAndClaimBox(p1.row(), p1.col(), player)) newlyCompletedBoxes++;
         }
-        return completedBoxes;
+        return newlyCompletedBoxes;
     }
 
     private boolean checkAndClaimBox(int row, int col, Player player) {
@@ -65,7 +65,13 @@ public class Board {
         if (row < 0 || col < 0 || row >= height - 1 || col >= width - 1) {
             return false;
         }
+        
+        Point key = new Point(row, col);
 
+        // If the box is already claimed, do nothing
+        if (completedBoxes.containsKey(key)) {
+            return false;
+        }
         Line top = new Line(new Point(row, col), new Point(row, col + 1));
         Line bottom = new Line(new Point(row + 1, col), new Point(row + 1, col + 1));
         Line left = new Line(new Point(row, col), new Point(row + 1, col));
