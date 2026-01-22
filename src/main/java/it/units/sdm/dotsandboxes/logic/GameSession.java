@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class GameSession {
 
+    private static final Player[] PLAYERS = { Player.Player1, Player.Player2 };
+
     private final Board board;
     private Player currentPlayer;
 
@@ -30,8 +32,10 @@ public class GameSession {
 
         // Initialize scores to 0 for both players
         scores = new EnumMap<>(Player.class);
-        scores.put(Player.Player1, 0);
-        scores.put(Player.Player2, 0);
+        for (Player p : PLAYERS) {
+            scores.put(p, 0);
+    }
+
     }
 
     public Player getCurrentPlayer() {
