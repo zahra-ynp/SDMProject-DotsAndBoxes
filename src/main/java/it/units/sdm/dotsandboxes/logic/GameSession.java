@@ -55,7 +55,8 @@ public class GameSession {
         // If one (or two) boxes were completed -> player gets an extra turn (do not switch).
         if (completedBoxes == 0) {
             // Minimal rule: switch player when the move does not score
-            currentPlayer = (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+            switchPlayer();
+
         } else {
             // Add points to the current player for each completed box
             scores.put(currentPlayer, scores.get(currentPlayer) + completedBoxes);
@@ -109,5 +110,10 @@ public class GameSession {
     public Player getBoxOwner(Point topLeft) {
         return board.getBoxOwner(topLeft);
     }
+
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == Player.Player1) ? Player.Player2 : Player.Player1;
+    }
+
 
 }
