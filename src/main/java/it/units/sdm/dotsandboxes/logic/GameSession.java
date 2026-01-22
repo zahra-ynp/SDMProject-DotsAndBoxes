@@ -69,9 +69,12 @@ public class GameSession {
         int totalBoxes = (width - 1) * (height - 1);
 
         // Game ends when all boxes are claimed by either player
-        int claimedBoxes = scores.get(Player.Player1) + scores.get(Player.Player2);
-
+        int claimedBoxes = 0;
+        for (Player p : PLAYERS) {
+            claimedBoxes += scores.get(p);
+        }
         return claimedBoxes == totalBoxes;
+
     }
 
     public Player getWinner() {
