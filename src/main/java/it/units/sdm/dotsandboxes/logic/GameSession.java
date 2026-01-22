@@ -83,16 +83,25 @@ public class GameSession {
             return null;
         }
 
-        int scoreP1 = scores.get(Player.Player1);
-        int scoreP2 = scores.get(Player.Player2);
+        Player bestPlayer = null;
+        int bestScore = -1;
+        boolean tie = false;
 
-        // If scores are equal when the game ends -> tie
-        if (scoreP1 == scoreP2) {
-            return null;
+        for (Player p : PLAYERS) {
+            int s = scores.get(p);
+            if (s > bestScore) {
+                bestScore = s;
+                bestPlayer = p;
+                tie = false;
+            } else if (s == bestScore) {
+                tie = true;
+            }
         }
 
-        return (scoreP1 > scoreP2) ? Player.Player1 : Player.Player2;
+        // If scores are equal when the game ends -> tie
+        return tie ? null : bestPlayer;
     }
+
 
     public int getWidth() {
         return width;
