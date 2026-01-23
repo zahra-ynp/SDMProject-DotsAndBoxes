@@ -124,30 +124,27 @@ class BoardTest {
             assertThrows(IllegalArgumentException.class, () -> board.addLine(farAway,Player.Player1));
         }
 
-        @Test
-        void doesNotClaimSameBoxTwice() {
-            Board board = new Board(2, 2);
+    @Test
+        void boxOwnerDoesNotChangeAfterItIsClaimed() {
+            Board board = new Board(3, 2);
 
-            // First, draw 3 sides (no box yet)
-            board.addLine(new Line(new Point(0,0), new Point(0,1)), Player.Player1); // top
-            board.addLine(new Line(new Point(0,0), new Point(1,0)), Player.Player2); // left
-            board.addLine(new Line(new Point(1,0), new Point(1,1)), Player.Player1); // bottom
+        // Left box (top-left at 0,0) will be completed by Player1
+        board.addLine(new Line(new Point(0,0), new Point(0,1)), Player.Player2); // top
+        board.addLine(new Line(new Point(0,0), new Point(1,0)), Player.Player2); // left
+        board.addLine(new Line(new Point(1,0), new Point(1,1)), Player.Player2); // bottom
+        board.addLine(new Line(new Point(0,1), new Point(1,1)), Player.Player1); // right -> completes left box
 
-            // Now draw last side: completes the box
-            int firstClaim = board.addLine(new Line(new Point(0,1), new Point(1,1)), Player.Player2); // right
-            assertEquals(1, firstClaim);
+        assertEquals(Player.Player1, board.getBoxOwner(new Point(0,0)));
 
-            // Box owner must be Player2
-            assertEquals(Player.Player2, board.getBoxOwner(new Point(0,0)));
+        // Now complete the RIGHT box by Player2.
+        // This move checks affected boxes, and might re-check left one too depending on implementation.
+        board.addLine(new Line(new Point(0,1), new Point(0,2)), Player.Player2); // top right
+        board.addLine(new Line(new Point(1,1), new Point(1,2)), Player.Player2); // bottom right
+        board.addLine(new Line(new Point(0,2), new Point(1,2)), Player.Player2); // right border
 
-            // Now play an unrelated line (this should NOT re-claim the same box)
-            // Example: on 2x2 there aren't extra lines, so just call check via another attempt:
-            // We'll simulate by trying to "count again" through a second completion attempt (not possible via real moves),
-            // so we verify that the owner doesn't change even if another player draws a line that touches it.
-
-            // This line is duplicate, so it throws; instead, we just verify box owner stays the same:
-            assertEquals(Player.Player2, board.getBoxOwner(new Point(0,0)));
-        }
+        // Owner of left box MUST still be Player1 (should not be overwritten)
+        assertEquals(Player.Player1, board.getBoxOwner(new Point(0,0)));
+    }
 }
 
 
