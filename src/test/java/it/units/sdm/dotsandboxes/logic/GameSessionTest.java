@@ -1,14 +1,8 @@
 package it.units.sdm.dotsandboxes.logic;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import it.units.sdm.dotsandboxes.model.Direction;
-import it.units.sdm.dotsandboxes.model.Move;
-import it.units.sdm.dotsandboxes.model.Player;
+import it.units.sdm.dotsandboxes.model.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameSessionTest {
 

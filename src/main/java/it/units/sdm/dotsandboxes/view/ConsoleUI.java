@@ -29,6 +29,8 @@ public class ConsoleUI {
         System.out.println("   WELCOME TO DOTS AND BOXES    ");
         System.out.println("================================");
 
+        printMoveHelp();
+
         while (!gameSession.isGameOver()) {
             printBoard();
             System.out.println("--------------------------------");
@@ -62,6 +64,19 @@ public class ConsoleUI {
             System.out.println("WINNER: " + colorize(winner.name(), winner));
         }
     }
+    
+
+    private void printMoveHelp() {
+        System.out.println();
+        System.out.println("Enter move as: row col dir");
+        System.out.println("dir = H or V");
+        System.out.println("H row col draws: (row,col) -> (row, col+1)   [left -> right]");
+        System.out.println("V row col draws: (row,col) -> (row+1, col)   [top -> bottom]");
+        System.out.println("Example: 1 1 H means connect (1,1) to (1,2)");
+        System.out.println();
+    }
+
+
 
     private Move getValidMoveFromUser() {
         while (true) {
@@ -95,57 +110,67 @@ public class ConsoleUI {
         int width = gameSession.getWidth();
         int height = gameSession.getHeight();
 
-        // Loop through each row of dots
+        // ---- Column labels ----
+        System.out.print("    ");
+        for (int c = 0; c < width; c++) {
+            System.out.print(c);
+            if (c < width - 1) System.out.print("   ");
+        }
+        System.out.println();
+
+        // ---- Board ----
         for (int r = 0; r < height; r++) {
 
-            // 1. Print Horizontal Lines (Row of dots)
-            for (int c = 0; c < width; c++) {
-                System.out.print("."); // The Dot
+            // Row label (dots row)
+            System.out.printf("%2d  ", r);
 
-                // Check if there is a horizontal line to the right
+            // Dots + horizontal lines
+            for (int c = 0; c < width; c++) {
+                System.out.print(".");
+
                 if (c < width - 1) {
-                    Line rightLine = new Line(new Point(r, c), new Point(r, c + 1));
-                    if (gameSession.isLineDrawn(rightLine)) {
-                        Player owner = gameSession.getLineOwner(rightLine);
+                    Line right = new Line(new Point(r, c), new Point(r, c + 1));
+                    if (gameSession.isLineDrawn(right)) {
+                        Player owner = gameSession.getLineOwner(right);
                         System.out.print(colorize("---", owner));
                     } else {
-                        System.out.print("   "); // Empty space
+                        System.out.print("   ");
                     }
                 }
             }
-            System.out.println(); // New line after row of dots
+            System.out.println();
 
-            // 2. Print Vertical Lines (Between rows of dots)
+            // Vertical lines + box owners
             if (r < height - 1) {
+                System.out.print("    ");
                 for (int c = 0; c < width; c++) {
-                    // Vertical line check (below the dot)
-                    Line downLine = new Line(new Point(r, c), new Point(r + 1, c));
-                    if (gameSession.isLineDrawn(downLine)) {
-                        Player owner = gameSession.getLineOwner(downLine);
+                    Line down = new Line(new Point(r, c), new Point(r + 1, c));
+                    if (gameSession.isLineDrawn(down)) {
+                        Player owner = gameSession.getLineOwner(down);
                         System.out.print(colorize("|", owner));
                     } else {
                         System.out.print(" ");
                     }
 
-                    // Space between vertical struts
                     if (c < width - 1) {
                         Player boxOwner = gameSession.getBoxOwner(new Point(r, c));
                         if (boxOwner != null) {
-                            // Print a colored label in the center (e.g., " A " or " B ")
-                            String label = (boxOwner == Player.Player1) ? " P1" : " P2";
+                            String label = boxOwner == Player.Player1 ? " P1" : " P2";
                             System.out.print(colorize(label, boxOwner));
                         } else {
-                            System.out.print("   "); // 3 spaces to align
+                            System.out.print("   ");
                         }
                     }
                 }
-                System.out.println(); // Finish the vertical row
+                System.out.println();
             }
         }
     }
 
+    // Color helper for Player1 / Player2
     private String colorize(String text, Player player) {
         if (player == null) return text;
+
         if (player == Player.Player1) {
             return BLUE + text + RESET;
         } else {
@@ -153,3 +178,5 @@ public class ConsoleUI {
         }
     }
 }
+
+
