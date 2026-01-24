@@ -24,7 +24,7 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 
 ## How to Run
 
-1. **Prerequisites:** Java Development Kit (JDK) 21 or higher.
+1. **Prerequisites:** Java Development Kit (JDK) 17 or higher.
 2. **Compile & Run:**
 Navigate to the `src` folder and run the `Main` class.
 ```bash
