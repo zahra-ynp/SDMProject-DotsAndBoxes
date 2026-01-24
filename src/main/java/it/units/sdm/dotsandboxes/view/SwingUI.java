@@ -63,7 +63,6 @@ public class SwingUI extends JPanel {
     private void handleMouseMove(int mouseX, int mouseY) {
         Move bestCandidate = null;
 
-        // Reset Logic
         // We scan all possible lines to see if the mouse is "inside" one
 
         for (int r = 0; r < session.getHeight(); r++) {
@@ -113,10 +112,53 @@ public class SwingUI extends JPanel {
     }
 
     private void checkGameOver() {
-        if (session.isGameOver()) {
-            JOptionPane.showMessageDialog(this,
-                    "Game Over! Winner: " + (session.getWinner() == null ? "Draw" : session.getWinner().name()));
+        if (!session.isGameOver()) return;
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+
+        Player winner = session.getWinner();
+        String titleText;
+        String colorHex;
+
+        if (winner == null) {
+            titleText = "IT'S A TIE!";
+            colorHex = "333333"; // Dark Gray
+        } else {
+            titleText = "WINNER: " + winner.name();
+            Color c = getPlayerColor(winner);
+            colorHex = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
         }
+
+        String html = "<html><body style='width: 300px; text-align: center; font-family: sans-serif;'>" +
+
+                // WINNER TITLE
+                "<h1 style='font-size: 26px; color: " + colorHex + "; margin: 10px 0;'>" + titleText + "</h1>" +
+
+                // CONGRATULATIONS
+                "<h2 style='font-size: 18px; color: #444444; margin: 0;'>Congratulations!</h2>" +
+
+                // SEPARATOR LINE
+                "<hr style='margin: 15px 0; border: 0; border-top: 1px solid #ccc;'>" +
+
+                // FINAL SCORE SECTION
+                "<h3 style='font-size: 16px; color: #000000; margin-bottom: 5px;'>Final Score</h3>" +
+                "<p style='font-size: 14px; margin: 0;'>" +
+                "<span style='color: blue;'>Player 1: " + session.getScore(Player.Player1) + "</span>" +
+                " &nbsp;|&nbsp; " +
+                "<span style='color: red;'>Player 2: " + session.getScore(Player.Player2) + "</span>" +
+                "</p>" +
+
+                "<br></body></html>";
+
+        JLabel label = new JLabel(html);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(label);
+
+        JOptionPane.showMessageDialog(this, panel, "Game Over", JOptionPane.PLAIN_MESSAGE);
+
+        System.exit(0);
     }
 
     @Override
@@ -125,9 +167,10 @@ public class SwingUI extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        drawBoxes(g2d);
         drawLines(g2d);
-        drawDots(g2d);
         drawHover(g2d);
+        drawDots(g2d);
         drawScores(g2d);
     }
 
@@ -200,16 +243,69 @@ public class SwingUI extends JPanel {
     }
 
     private void drawScores(Graphics2D g2d) {
+        Player current = session.getCurrentPlayer();
+        String p1Text = "Player 1: " + session.getScore(Player.Player1);
+        String p2Text = "Player 2: " + session.getScore(Player.Player2);
+        String separator = "  |  ";
+
+        int startX = OFFSET;
+        int y = OFFSET / 2;
+
+        if (current == Player.Player1 && !session.isGameOver()) {
+            g2d.setColor(Color.BLUE);
+            g2d.setFont(new Font("Arial", Font.BOLD, 16));
+        } else {
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(new Font("Arial", Font.PLAIN, 14));
+        }
+        g2d.drawString(p1Text, startX, y);
+
+        int p1Width = g2d.getFontMetrics().stringWidth(p1Text);
+        startX += p1Width;
+
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        String scores = String.format("P1 (Blue): %d   |   P2 (Red): %d",
-                session.getScore(Player.Player1), session.getScore(Player.Player2));
-        g2d.drawString(scores, OFFSET, OFFSET / 2);
+        g2d.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2d.drawString(separator, startX, y);
+
+        int sepWidth = g2d.getFontMetrics().stringWidth(separator);
+        startX += sepWidth;
+
+        if (current == Player.Player2 && !session.isGameOver()) {
+            g2d.setColor(Color.RED);
+            g2d.setFont(new Font("Arial", Font.BOLD, 16));
+        } else {
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(new Font("Arial", Font.PLAIN, 14));
+        }
+        g2d.drawString(p2Text, startX, y);
     }
 
     private Color getPlayerColor(Player player) {
         if (player == Player.Player1) return Color.BLUE;
         if (player == Player.Player2) return Color.RED;
         return Color.BLACK;
+    }
+
+    private void drawBoxes(Graphics2D g2d) {
+        // Iterate through all potential boxes (width-1, height-1)
+        for (int r = 0; r < session.getHeight() - 1; r++) {
+            for (int c = 0; c < session.getWidth() - 1; c++) {
+
+                Player owner = session.getBoxOwner(new Point(r, c));
+
+                if (owner != null) {
+                    // Set color with Transparency (Alpha = 50 out of 255)
+                    Color baseColor = getPlayerColor(owner);
+                    g2d.setColor(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 50));
+
+                    // Calculate coordinates
+                    int x = OFFSET + (c * SPACING);
+                    int y = OFFSET + (r * SPACING);
+
+                    // Fill the square
+                    g2d.fillRect(x, y, SPACING, SPACING);
+                }
+            }
+        }
     }
 }
