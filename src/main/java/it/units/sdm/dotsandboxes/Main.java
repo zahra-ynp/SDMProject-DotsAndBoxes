@@ -43,9 +43,6 @@ public class Main {
              frame.setVisible(true);
          });
 
-         session.makeMove(new Move(1, 2, Direction.VERTICAL)); // Should see a BLUE line
-         session.makeMove(new Move(0, 0, Direction.HORIZONTAL)); // Should see a Red line
-
      }
 
 
