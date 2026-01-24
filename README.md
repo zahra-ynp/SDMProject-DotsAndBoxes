@@ -28,8 +28,9 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 2. **Compile & Run:**
 Navigate to the `src` folder and run the `Main` class.
 ```bash
+cd src/main/java
 javac it/units/sdm/dotsandboxes/Main.java
-java it.units.sdm.dotsandboxes.Main
+java  it.units.sdm.dotsandboxes.Main
 
 ```
 
