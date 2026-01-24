@@ -1,26 +1,53 @@
 package it.units.sdm.dotsandboxes;
 
 import it.units.sdm.dotsandboxes.logic.GameSession;
+import it.units.sdm.dotsandboxes.model.Direction;
+import it.units.sdm.dotsandboxes.model.Move;
 import it.units.sdm.dotsandboxes.view.ConsoleUI;
+import it.units.sdm.dotsandboxes.view.SwingUI;
+
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Main {
      void main() {
-        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("--- SETUP ---");
+//        System.out.println("Enter number between 2 and 20 for columns (width): ");
+//        int width = getValidInt(scanner);
+//
+//        System.out.println("Enter number between 2 and 20 for rows (height): ");
+//        int height = getValidInt(scanner);
+//
+//        GameSession session = new GameSession(width, height);
+//
+//        ConsoleUI ui = new ConsoleUI(session);
+//
+//        ui.start();
 
-        System.out.println("--- SETUP ---");
-        System.out.println("Enter number between 2 and 5 for columns (width): ");
-        int width = getValidInt(scanner);
+         // 1. Setup Logic
+         // Hardcode size for now to test GUI layout
+         GameSession session = new GameSession(4, 4);
 
-        System.out.println("Enter number between 2 and 5 for rows (height): ");
-        int height = getValidInt(scanner);
+         // 2. Setup View (Swing)
+         SwingUtilities.invokeLater(() -> {
+             JFrame frame = new JFrame("Dots and Boxes");
+             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GameSession session = new GameSession(width, height);
+             SwingUI ui = new SwingUI(session);
+             frame.add(ui);
 
-        ConsoleUI ui = new ConsoleUI(session);
+             frame.pack(); // Adjust window size to fit the panel
+             frame.setLocationRelativeTo(null); // Center on screen
+             frame.setVisible(true);
+         });
 
-        ui.start();
-    }
+         session.makeMove(new Move(1, 2, Direction.VERTICAL)); // Should see a BLUE line
+         session.makeMove(new Move(0, 0, Direction.HORIZONTAL)); // Should see a Red line
+
+     }
+
 
     private static int getValidInt(Scanner scanner) {
         while (true) {
@@ -29,8 +56,8 @@ public class Main {
                 int val = Integer.parseInt(input);
 
                 // Check Range: Must be at least 2, but no more than 5
-                if (val < 2 || val > 5) {
-                    System.out.println("Invalid size! Please enter a number between 2 and 5:");
+                if (val < 2 || val > 20) {
+                    System.out.println("Invalid size! Please enter a number between 2 and 20:");
                     continue;
                 }
 
