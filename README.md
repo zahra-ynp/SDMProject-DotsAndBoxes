@@ -62,6 +62,7 @@ src/main/java/it/units/sdm/dotsandboxes/
 │   ├── Line.java
 │   ├── Point.java
 │   ├── Player.java
+│   ├── Direction.java
 │   └── Move.java
 └── view/
     ├── ConsoleUI.java   # Text-based interface
