@@ -19,11 +19,10 @@ public class GameSession {
     private final int width;
     private final int height;
 
-    // Store scores per player (EnumMap is perfect for enums)
+    // Store scores per player
     private final Map<Player, Integer> scores;
 
     public GameSession(int width, int height) {
-        // Player always starts
         this.width = width;
         this.height = height;
 
@@ -48,7 +47,7 @@ public class GameSession {
 
     public void makeMove(Move move) {
         // Convert the user's move into a concrete line on the board
-        // Board will validate duplicates and will also tell us if the move completes boxes.
+        // will validate duplicates and will also tell us if the move completes boxes.
         int completedBoxes = board.addLine(move.toLine(), currentPlayer);
 
         // If no box was completed -> switch player.
