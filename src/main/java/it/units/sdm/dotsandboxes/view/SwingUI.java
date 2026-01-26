@@ -28,7 +28,7 @@ public class SwingUI extends JPanel {
 
     public SwingUI(GameSession session) {
         this.session = session;
-        this.setPreferredSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(650, 650));
         this.setBackground(Color.WHITE);
 
         // Mouse MOVED (For Hover Effect)
