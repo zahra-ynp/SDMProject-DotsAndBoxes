@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class ConsoleUI {
 
-    // ANSI Escape Codes for Colors
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
     public static final String BLUE = "\u001B[34m";
@@ -34,10 +33,8 @@ public class ConsoleUI {
         while (!gameSession.isGameOver()) {
             printBoard();
             System.out.println("--------------------------------");
-            // Colorful Header
             String pName = colorize(gameSession.getCurrentPlayer().name(), gameSession.getCurrentPlayer());
             System.out.println("Current Player: " + pName);
-            // Colorful Scoreboard
             String p1Score = colorize("P1=" + gameSession.getScore(Player.Player1), Player.Player1);
             String p2Score = colorize("P2=" + gameSession.getScore(Player.Player2), Player.Player2);
             System.out.println("Score: " + p1Score + " | " + p2Score);
@@ -121,7 +118,7 @@ public class ConsoleUI {
         // ---- Board ----
         for (int r = 0; r < height; r++) {
 
-            // Row label (dots row)
+            // Row label
             System.out.printf("%2d  ", r);
 
             // Dots + horizontal lines
@@ -167,7 +164,6 @@ public class ConsoleUI {
         }
     }
 
-    // Color helper for Player1 / Player2
     private String colorize(String text, Player player) {
         if (player == null) return text;
 

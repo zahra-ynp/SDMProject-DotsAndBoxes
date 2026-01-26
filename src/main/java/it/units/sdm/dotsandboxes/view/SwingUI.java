@@ -20,19 +20,18 @@ public class SwingUI extends JPanel {
     // Track the "Ghost" move (the line under the mouse)
     private Move currentHoverMove = null;
 
-    // Visual settings
     private static final int DOT_SIZE = 10;
     private static final int LINE_THICKNESS = 6;
     private static final int SPACING = 60;
     private static final int OFFSET = 50;
-    private static final int HITBOX_WIDTH = 20; // How "fat" the invisible click area is
+    private static final int HITBOX_WIDTH = 20;
 
     public SwingUI(GameSession session) {
         this.session = session;
-        this.setPreferredSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(650, 650));
         this.setBackground(Color.WHITE);
 
-        // 1. Mouse MOVED (For Hover Effect)
+        // Mouse MOVED (For Hover Effect)
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -40,7 +39,7 @@ public class SwingUI extends JPanel {
             }
         });
 
-        // 2. Mouse CLICKED (For Action)
+        // Mouse CLICKED (For Action)
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -48,11 +47,11 @@ public class SwingUI extends JPanel {
                     // We simply execute the move we are already hovering over!
                     try {
                         session.makeMove(currentHoverMove);
-                        currentHoverMove = null; // Clear hover after move
+                        currentHoverMove = null;
                         repaint();
                         checkGameOver();
-                    } catch (IllegalArgumentException ex) {
-                        // Ignore
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
             }
@@ -124,7 +123,7 @@ public class SwingUI extends JPanel {
 
         if (winner == null) {
             titleText = "IT'S A TIE!";
-            colorHex = "333333"; // Dark Gray
+            colorHex = "333333";
         } else {
             titleText = "WINNER: " + winner.name();
             Color c = getPlayerColor(winner);
@@ -133,16 +132,12 @@ public class SwingUI extends JPanel {
 
         String html = "<html><body style='width: 300px; text-align: center; font-family: sans-serif;'>" +
 
-                // WINNER TITLE
                 "<h1 style='font-size: 26px; color: " + colorHex + "; margin: 10px 0;'>" + titleText + "</h1>" +
 
-                // CONGRATULATIONS
                 "<h2 style='font-size: 18px; color: #444444; margin: 0;'>Congratulations!</h2>" +
 
-                // SEPARATOR LINE
                 "<hr style='margin: 15px 0; border: 0; border-top: 1px solid #ccc;'>" +
 
-                // FINAL SCORE SECTION
                 "<h3 style='font-size: 16px; color: #000000; margin-bottom: 5px;'>Final Score</h3>" +
                 "<p style='font-size: 14px; margin: 0;'>" +
                 "<span style='color: blue;'>Player 1: " + session.getScore(Player.Player1) + "</span>" +
@@ -176,7 +171,7 @@ public class SwingUI extends JPanel {
 
     private void drawHover(Graphics2D g2d) {
         if (currentHoverMove != null) {
-            g2d.setColor(new Color(200, 200, 200)); // Light Gray
+            g2d.setColor(new Color(200, 200, 200));
             g2d.setStroke(new BasicStroke(LINE_THICKNESS));
 
             int r = currentHoverMove.row();
@@ -218,27 +213,29 @@ public class SwingUI extends JPanel {
                 // Check Horizontal Line (Right)
                 if (c < session.getWidth() - 1) {
                     Line line = new Line(new Point(r, c), new Point(r, c + 1));
-                    if (session.isLineDrawn(line)) {
-                        g2d.setColor(getPlayerColor(session.getLineOwner(line)));
-                        int x1 = OFFSET + (c * SPACING);
-                        int y1 = OFFSET + (r * SPACING);
-                        int x2 = OFFSET + ((c + 1) * SPACING);
-                        g2d.drawLine(x1, y1, x2, y1);
-                    }
+                    int x1 = OFFSET + (c * SPACING);
+                    int y1 = OFFSET + (r * SPACING);
+                    int x2 = OFFSET + ((c + 1) * SPACING);
+                    drawLineIfExisting(g2d, line, x1, y1, x2, y1);
                 }
 
                 // Check Vertical Line (Down)
                 if (r < session.getHeight() - 1) {
                     Line line = new Line(new Point(r, c), new Point(r + 1, c));
-                    if (session.isLineDrawn(line)) {
-                        g2d.setColor(getPlayerColor(session.getLineOwner(line)));
-                        int x1 = OFFSET + (c * SPACING);
-                        int y1 = OFFSET + (r * SPACING);
-                        int y2 = OFFSET + ((r + 1) * SPACING);
-                        g2d.drawLine(x1, y1, x1, y2);
-                    }
+                    int x1 = OFFSET + (c * SPACING);
+                    int y1 = OFFSET + (r * SPACING);
+                    int y2 = OFFSET + ((r + 1) * SPACING);
+                    drawLineIfExisting(g2d, line, x1, y1, x1, y2);
                 }
             }
+        }
+    }
+
+
+    private void drawLineIfExisting(Graphics2D g2d, Line line, int x1, int y1, int x2, int y2) {
+        if (session.isLineDrawn(line)) {
+            g2d.setColor(getPlayerColor(session.getLineOwner(line)));
+            g2d.drawLine(x1, y1, x2, y2);
         }
     }
 
@@ -294,15 +291,12 @@ public class SwingUI extends JPanel {
                 Player owner = session.getBoxOwner(new Point(r, c));
 
                 if (owner != null) {
-                    // Set color with Transparency (Alpha = 50 out of 255)
                     Color baseColor = getPlayerColor(owner);
                     g2d.setColor(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 50));
 
-                    // Calculate coordinates
                     int x = OFFSET + (c * SPACING);
                     int y = OFFSET + (r * SPACING);
 
-                    // Fill the square
                     g2d.fillRect(x, y, SPACING, SPACING);
                 }
             }

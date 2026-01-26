@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+      public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -62,18 +62,17 @@ public class Main {
             invisibleParent.setAlwaysOnTop(true);
             invisibleParent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             invisibleParent.setLocationRelativeTo(null);
-            invisibleParent.setVisible(true); // Briefly visible to grab focus
-            invisibleParent.setVisible(false); // Hide it immediately
+            invisibleParent.setVisible(false);
 
             int width = getValidGuiSize(invisibleParent, "Enter Number for Width (Columns)", "Min 2, Max 10");
             if (width == -1) {
-                invisibleParent.dispose(); // Clean up
+                invisibleParent.dispose();
                 return;
             }
 
             int height = getValidGuiSize(invisibleParent, "Enter Number for Height (Rows)", "Min 2, Max 10");
             if (height == -1) {
-                invisibleParent.dispose(); // Clean up
+                invisibleParent.dispose();
                 return;
             }
 
@@ -113,7 +112,7 @@ public class Main {
         }
     }
 
-    // --- HELPER: GUI Validation (Custom Panel) ---
+    // --- HELPER: GUI Validation ---
     private static int getValidGuiSize(JFrame parent, String dimensionName, String subtext) {
         while (true) {
             JPanel panel = new JPanel();
