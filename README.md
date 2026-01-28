@@ -52,7 +52,7 @@ Or (recommended for console clarity):
 javac it/units/sdm/dotsandboxes/Main.java
 java it.units.sdm.dotsandboxes.Main
 
-
+```
 3. **Launcher:**
 When prompted, enter:
 * `1` for **Console Mode**
