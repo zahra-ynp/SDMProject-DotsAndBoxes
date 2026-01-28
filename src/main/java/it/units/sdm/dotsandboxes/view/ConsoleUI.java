@@ -65,23 +65,48 @@ public class ConsoleUI {
 
     private void printMoveHelp() {
         System.out.println();
-        System.out.println("Enter move as: row col dir");
-        System.out.println("dir = H or V");
-        System.out.println("H row col draws: (row,col) -> (row, col+1)   [left -> right]");
-        System.out.println("V row col draws: (row,col) -> (row+1, col)   [top -> bottom]");
-        System.out.println("Example: 1 1 H means connect (1,1) to (1,2)");
+        System.out.println("How to make a move:");
+        System.out.println();
+        System.out.println("Type: row column direction");
+        System.out.println("• row, column = position of the dot (starting from 0)");
+        System.out.println("• direction:");
+        System.out.println("    H = draw a horizontal line (left -> right)");
+        System.out.println("    V = draw a vertical line (top -> bottom)");
+        System.out.println();
+        System.out.println("Examples:");
+        System.out.println("• 1 1 H -> connects dot (1,1) to dot (1,2)");
+        System.out.println("• 0 2 V -> connects dot (0,2) to dot (1,2)");
+        System.out.println();
+        System.out.println("Type 'help' any time to see these instructions again.");
         System.out.println();
     }
 
 
+    private void printQuitHelp() {
+        System.out.println("You can type 'quit' or 'exit' anytime to stop the game.");
+    }
+
 
     private Move getValidMoveFromUser() {
         while (true) {
-            System.out.print("Enter move (row col direction[H/V]): ");
-            String input = scanner.nextLine();
+            System.out.print("Enter move (row col H/V) or type 'help': ");
+
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting game. Bye!");
+                System.exit(0);
+            }
+
+            // If user types help, show instructions again
+            if (input.equalsIgnoreCase("help")) {
+                printMoveHelp();
+                continue;
+            }
+
 
             try {
-                String[] parts = input.trim().split("\\s+");
+                String[] parts = input.split("\\s+");
                 if (parts.length != 3) throw new IllegalArgumentException("Use format: row col H/V");
 
                 int row = Integer.parseInt(parts[0]);
@@ -108,12 +133,12 @@ public class ConsoleUI {
         int height = gameSession.getHeight();
 
         // ---- Column labels ----
-        System.out.print("    ");
+        System.out.print("    "); // left padding for row labels
         for (int c = 0; c < width; c++) {
-            System.out.print(c);
-            if (c < width - 1) System.out.print("   ");
+            System.out.printf("%-4d", c); // each column takes 4 chars
         }
         System.out.println();
+        
 
         // ---- Board ----
         for (int r = 0; r < height; r++) {

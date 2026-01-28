@@ -35,10 +35,18 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 ./gradlew run
 
 ```
-* **What this does**
+Or (recommended for console clarity):
+
+```bash
+./gradlew run --console=plain
+
+```
+**What this does**
 * Compiles the project
 * Runs all automated tests
 * Launches the game launcher
+
+**Tip:** Use ./gradlew run --console=plain for the best console experience.
 
 3. **Launcher:**
 When prompted, enter:
@@ -46,7 +54,11 @@ When prompted, enter:
 * `2` for **GUI Mode**
 * `3` for **Exit**
 
-
+**Console Controls**
+When playing in Console Mode:
+* Enter moves using: row col H/V
+* Type help to reprint the move instructions
+* Type quit or exit to stop the game at any time
 
 ## How to Play
 
