@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    application
 }
 
 group = "org.example"
@@ -17,6 +18,14 @@ java {
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(17)
+}
+
+application {
+    mainClass.set("it.units.sdm.dotsandboxes.Main")
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
 
 

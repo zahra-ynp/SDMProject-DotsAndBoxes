@@ -22,7 +22,12 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Enter choice: ");
 
+            if (!scanner.hasNextLine()) {
+                System.out.println("No input available. Please run in an interactive terminal.");
+                return;
+            }
             String choice = scanner.nextLine().trim();
+
 
             switch (choice) {
                 case "1":
@@ -99,6 +104,11 @@ public class Main {
     private static int getValidInt(Scanner scanner) {
         while (true) {
             try {
+
+                // ✅ Prevent NoSuchElementException (important for Gradle run)
+                if (!scanner.hasNextLine()) {
+                    throw new IllegalStateException("No input available. Please run in an interactive terminal.");
+                }
                 String input = scanner.nextLine();
                 int val = Integer.parseInt(input);
                 if (val < 2 || val > 10) {

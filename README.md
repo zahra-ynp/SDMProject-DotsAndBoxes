@@ -8,7 +8,8 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 
 * Simple text-based interface for terminal play.
 * Supports board sizes from 2x2 to 10x10.
-* Input validation for coordinates.
+* Clear input instructions and validation
+* Colored output for players and scores
 
 ### GUI Version (Java Swing)
 
@@ -24,21 +25,26 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 
 ## How to Run
 
-1. **Prerequisites:** Java Development Kit (JDK) 17 or higher.
-2. **Compile & Run:**
-Navigate to the `src` folder and run the `Main` class.
+1. **Prerequisites:** Java (JDK) 17 or higher.
+* Gradle Wrapper included (no local Gradle installation required)
+2. ## Run the Project
+* From the project root directory, run:
+
 ```bash
-cd src/main/java
-javac it/units/sdm/dotsandboxes/Main.java
-java  it.units.sdm.dotsandboxes.Main
+./gradlew clean build
+./gradlew run
 
 ```
-
+* **What this does**
+* Compiles the project
+* Runs all automated tests
+* Launches the game launcher
 
 3. **Launcher:**
 When prompted, enter:
 * `1` for **Console Mode**
 * `2` for **GUI Mode**
+* `3` for **Exit**
 
 
 
