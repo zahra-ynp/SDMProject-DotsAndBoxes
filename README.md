@@ -28,7 +28,7 @@ A Java implementation of the classic **Dots and Boxes** game, featuring both a t
 1. **Prerequisites:** Java (JDK) 17 or higher.
 * Gradle Wrapper included (no local Gradle installation required)
 2. ## Run the Project
-* From the project root directory, run:
+2.1 ** From the project root directory, run:
 
 ```bash
 ./gradlew clean build
@@ -46,7 +46,12 @@ Or (recommended for console clarity):
 * Runs all automated tests
 * Launches the game launcher
 
-**Tip:** Use ./gradlew run --console=plain for the best console experience.
+2.2 **Navigate to the `src/main/java` folder and run the `Main` class.
+
+```bash
+javac it/units/sdm/dotsandboxes/Main.java
+java it.units.sdm.dotsandboxes.Main
+
 
 3. **Launcher:**
 When prompted, enter:
